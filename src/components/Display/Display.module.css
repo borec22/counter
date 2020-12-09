@@ -1,0 +1,18 @@
+.display {
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   width: 280px;
+   height: 110px;
+   background-color: deepskyblue;
+   border-radius: 5px;
+   margin: 10px;
+}
+.total {
+   font-size: 80px;
+   font-weight: bolder;
+}
+.red {
+   color: darkred;
+}
