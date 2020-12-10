@@ -1,25 +1,82 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import './App.css';
 import {Button} from './components/Button/Button';
 import {Display} from './components/Display/Display';
 
 function App() {
-   const max = 4;
-   const min = 0;
-   let [count, setCount] = useState<number>(min);
+   /*let min = 0;
+   let max = 5;*/
+
+   let [startValue, setStartValue] = useState<number>(0);
+   let [maxValue, setMaxValue] = useState<number>(5);
+
+   let [count, setCount] = useState<number>(startValue);
+   let [message, setMessage] = useState<string>('');
+   let [error, setError] = useState<string>('');
+   let [isDisabledSet, setIsDisabledSet] = useState<boolean>(true);
+
+   useEffect(() => {
+      if (startValue < 0 || maxValue <= startValue) {
+         setError('Incorrect value!');
+      } else {
+         setError('')
+      }
+   }, [startValue, maxValue]);
 
    const increase = () => setCount(count + 1);
-   const reset = () => setCount(0);
+   const reset = () => setCount(startValue);
+   const changeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      setMaxValue && setMaxValue(+e.currentTarget.value);
+      setMessage(`enter values and press 'set'`);
+      setIsDisabledSet(false);
+   };
+   const changeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      setStartValue && setStartValue(+e.currentTarget.value);
+      setMessage(`enter values and press 'set'`);
+      setIsDisabledSet(false);
+   };
+   const set = () => {
+      setCount(startValue);
+      setMessage('');
+      setIsDisabledSet(true);
+   }
 
    return (
       <div className='App'>
-         <div className='AppWrapper'>
-            <Display count={count} maxTotal={max} />
+
+         <div className='wrapper'>
+            <Display count={count}
+                     maxValue={maxValue}
+                     startValue={startValue}
+                     view='settings'
+                     error={error}
+                     setMaxValue={changeMaxValueHandler}
+                     setStartValue={changeStartValueHandler}
+            />
             <div className='control'>
-               <Button onClick={increase} isDisable={count > max}>INC</Button>
-               <Button onClick={reset} isDisable={count === min}>RESET</Button>
+               <Button onClick={set} isDisable={Boolean(error) || isDisabledSet}>SET</Button>
             </div>
          </div>
+
+         <div className='wrapper'>
+            <Display count={count}
+                     maxValue={maxValue}
+                     view='main'
+                     message={message}
+                     error={error}
+            />
+            <div className='control'>
+               <Button onClick={increase}
+                       isDisable={!isDisabledSet || count >= maxValue}>
+                  INC
+               </Button>
+               <Button onClick={reset}
+                       isDisable={!isDisabledSet || count === startValue}>
+                  RESET
+               </Button>
+            </div>
+         </div>
+
       </div>
    );
 }

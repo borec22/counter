@@ -8,9 +8,9 @@
 body {
    background-color: #282c34;
 }
-.AppWrapper {
-   width: 300px;
-   height: 217px;
+.wrapper {
+   width: 400px;
+   height: 300px;
    border: 3px solid deepskyblue;
    border-radius: 5px;
 }
@@ -19,8 +19,8 @@ body {
    flex-direction: row;
    justify-content: space-evenly;
    align-items: center;
-   width: 272px;
-   height: 70px;
+   width: 375px;
+   height: 95px;
    border: 3px solid deepskyblue;
    border-radius: 5px;
    margin: 10px;
