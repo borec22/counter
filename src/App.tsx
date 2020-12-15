@@ -4,11 +4,8 @@ import {Button} from './components/Button/Button';
 import {Display} from './components/Display/Display';
 
 function App() {
-   /*let min = 0;
-   let max = 5;*/
-
-   let [startValue, setStartValue] = useState<number>(0);
-   let [maxValue, setMaxValue] = useState<number>(5);
+   let [startValue, setStartValue] = useState<number>( JSON.parse(localStorage.getItem('start value') || '0'));
+   let [maxValue, setMaxValue] = useState<number>(JSON.parse(localStorage.getItem('max value') || '5'));
 
    let [count, setCount] = useState<number>(startValue);
    let [message, setMessage] = useState<string>('');
@@ -36,6 +33,9 @@ function App() {
       setIsDisabledSet(false);
    };
    const set = () => {
+      localStorage.setItem('start value',  JSON.stringify(startValue));
+      localStorage.setItem('max value', JSON.stringify(maxValue));
+
       setCount(startValue);
       setMessage('');
       setIsDisabledSet(true);
