@@ -1,0 +1,50 @@
+.settings {
+   display: grid;
+   grid-template-rows: 85px 85px;
+}
+
+.field {
+   display: grid;
+   grid-template-columns: 190px 190px;
+}
+
+.fieldItem {
+   background: white;
+   width: 140px;
+   height: 40px;
+   margin-top: 10px;
+   border-radius: 3px;
+}
+
+.fieldFirst {
+   padding-top: 20px;
+}
+
+.fieldSecond {
+   padding-top: 10px;
+}
+
+.label {
+   padding-left: 15px;
+   padding-top: 12px;
+   font-size: 27px;
+   font-weight: bolder;
+   color: #282c34;
+}
+
+.input {
+   color: #282c34;
+   padding: 11px;
+   border: 2px solid #282c34;
+   border-radius: 3px;
+   text-align: center;
+   font-weight: bolder;
+   width: 116px;
+   outline-style: none;
+   background-color: white;
+}
+
+.error {
+   background: rgba(255, 0, 0, 0.2);
+   border: 2px solid red;
+}
