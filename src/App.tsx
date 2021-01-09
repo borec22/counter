@@ -1,51 +1,80 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useReducer, useState} from 'react';
 import './App.css';
 import {Button} from './components/Button/Button';
 import {Display} from './components/Display/Display';
+import {
+   InitialStateType,
+   reducer,
+   setCount,
+   setError,
+   setMaxValue, setMessage,
+   setSettingsMode,
+   setShowMainButtons, setStartValue
+} from './redux/reducer';
 
 function App() {
-   let [startValue, setStartValue] = useState<number>(JSON.parse(localStorage.getItem('start value') || '0'));
-   let [maxValue, setMaxValue] = useState<number>(JSON.parse(localStorage.getItem('max value') || '5'));
+   // let [startValue, setStartValue] = useState<number>(JSON.parse(localStorage.getItem('start value') || '0'));
+   // let [maxValue, setMaxValue] = useState<number>(JSON.parse(localStorage.getItem('max value') || '5'));
+   //
+   // let [count, setCount] = useState<number>(startValue);
+   // let [message, setMessage] = useState<string>('');
+   // let [error, setError] = useState<string>('');
+   //
+   // let [settingsMode, setSettingsMode] = useState<boolean>(false);
+   // let [showMainButtons, setShowMainButtons] = useState<boolean>(true);
 
-   let [count, setCount] = useState<number>(startValue);
-   let [message, setMessage] = useState<string>('');
-   let [error, setError] = useState<string>('');
+   let min = JSON.parse(localStorage.getItem('start value') || '0');
+   let max = JSON.parse(localStorage.getItem('max value') || '5');
 
-   let [settingsMode, setSettingsMode] = useState<boolean>(false);
-   let [showMainButtons, setShowMainButtons] = useState<boolean>(true);
+   const initialState: InitialStateType = {
+      startValue: min,
+      maxValue: max,
+
+      count: min,
+      message: '',
+      error: '',
+
+      settingsMode: false,
+      showMainButtons: true
+   }
+
+   let [state, dispatch] = useReducer(reducer, initialState);
+
+   let {startValue, maxValue, count, message, error, settingsMode, showMainButtons} = state;
 
    useEffect(() => {
       if (startValue < 0 || maxValue <= startValue) {
-         setError('Incorrect value!');
+         dispatch(setError('Incorrect value!'))
       } else {
-         setError('')
+         dispatch(setError(''))
       }
    }, [startValue, maxValue]);
 
    const activateSettingsMode = () => {
-      setSettingsMode(true);
-      setShowMainButtons(false);
+      dispatch(setSettingsMode(true));
+      dispatch(setShowMainButtons(false));
    };
-   const deactivateSettingsMode = () => setSettingsMode(false);
+   const deactivateSettingsMode = () => dispatch(setSettingsMode(false));
 
-   const increase = () => setCount(count + 1);
-   const reset = () => setCount(startValue);
+   const increase = () => dispatch(setCount(count + 1));
+   const reset = () => dispatch(setCount(startValue));
+
    const changeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      setMaxValue && setMaxValue(+e.currentTarget.value);
-      setMessage(`enter values and press 'set'`);
+      dispatch(setMaxValue(+e.currentTarget.value));
+      dispatch(setMessage(`enter values and press 'set'`));
    };
    const changeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      setStartValue && setStartValue(+e.currentTarget.value);
-      setMessage(`enter values and press 'set'`);
+      dispatch(setStartValue(+e.currentTarget.value));
+      dispatch(setMessage(`enter values and press 'set'`));
    };
    const set = () => {
       localStorage.setItem('start value', JSON.stringify(startValue));
       localStorage.setItem('max value', JSON.stringify(maxValue));
 
-      setCount(startValue);
+      dispatch(setCount(startValue));
       deactivateSettingsMode();
-      setMessage('');
-      setShowMainButtons(true);
+      dispatch(setMessage(''));
+      dispatch(setShowMainButtons(true));
    }
 
    return (
