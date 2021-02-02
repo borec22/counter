@@ -1,46 +1,24 @@
-import React, {ChangeEvent, useEffect, useReducer, useState} from 'react';
-import './App.css';
+import React, {ChangeEvent, useEffect} from 'react';
+import classes from './App.module.css';
 import {Button} from './components/Button/Button';
 import {Display} from './components/Display/Display';
 import {
-   InitialStateType,
-   reducer,
+   InitialStateType as counterType,
+   useDispatch,
    setCount,
    setError,
    setMaxValue, setMessage,
    setSettingsMode,
    setShowMainButtons, setStartValue
 } from './redux/reducer';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from './redux/store';
 
 function App() {
-   // let [startValue, setStartValue] = useState<number>(JSON.parse(localStorage.getItem('start value') || '0'));
-   // let [maxValue, setMaxValue] = useState<number>(JSON.parse(localStorage.getItem('max value') || '5'));
-   //
-   // let [count, setCount] = useState<number>(startValue);
-   // let [message, setMessage] = useState<string>('');
-   // let [error, setError] = useState<string>('');
-   //
-   // let [settingsMode, setSettingsMode] = useState<boolean>(false);
-   // let [showMainButtons, setShowMainButtons] = useState<boolean>(true);
+   const dispatch= useDispatch();
+   const state = useSelector<AppRootStateType, counterType>(state => state.counter);
 
-   let min = JSON.parse(localStorage.getItem('start value') || '0');
-   let max = JSON.parse(localStorage.getItem('max value') || '5');
-
-   const initialState: InitialStateType = {
-      startValue: min,
-      maxValue: max,
-
-      count: min,
-      message: '',
-      error: '',
-
-      settingsMode: false,
-      showMainButtons: true
-   }
-
-   let [state, dispatch] = useReducer(reducer, initialState);
-
-   let {startValue, maxValue, count, message, error, settingsMode, showMainButtons} = state;
+   let {startValue, maxValue, count, error, settingsMode, showMainButtons} = state;
 
    useEffect(() => {
       if (startValue < 0 || maxValue <= startValue) {
@@ -78,19 +56,18 @@ function App() {
    }
 
    return (
-      <div className='App'>
-         <div className='wrapper'>
+      <div className={classes.App}>
+         <div className={classes.wrapper}>
             <Display count={count}
                      maxValue={maxValue}
                      view={settingsMode ? 'settings' : 'main'}
-                     message={message}
                      error={error}
 
                      setMaxValue={changeMaxValueHandler}
                      setStartValue={changeStartValueHandler}
                      startValue={startValue}
             />
-            <div className='control'>
+            <div className={classes.control}>
                {
                   showMainButtons ?
                      <>
@@ -102,12 +79,12 @@ function App() {
                                 isDisable={count === startValue}>
                            RESET
                         </Button>
-                        <Button onClick={settingsMode ? set : activateSettingsMode}
+                        <Button onClick={activateSettingsMode}
                                 isDisable={Boolean(error)}>
                            SET
                         </Button>
                      </> :
-                     <Button onClick={settingsMode ? set : activateSettingsMode}
+                     <Button onClick={set}
                              isDisable={Boolean(error)}>
                         SET
                      </Button>

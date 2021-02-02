@@ -1,3 +1,5 @@
+import {useDispatch as _useDispatch} from 'react-redux';
+
 export type InitialStateType = {
    startValue: number
    maxValue: number
@@ -25,7 +27,22 @@ const SET_ERROR = 'SET-ERROR-REDUCER';
 const SET_SETTINGS_MODE = 'SET-SETTINGS-MODE-REDUCER';
 const SET_SHOW_MAIN_BUTTONS = 'SET-SHOW-MAIN-BUTTONS-REDUCER';
 
-export const reducer = (state: InitialStateType, action: ActionsType): InitialStateType => {
+const min = JSON.parse(localStorage.getItem('start value') || '0');
+const max = JSON.parse(localStorage.getItem('max value') || '5');
+
+const initialState: InitialStateType = {
+   startValue: min,
+   maxValue: max,
+
+   count: min,
+   message: '',
+   error: '',
+
+   settingsMode: false,
+   showMainButtons: true
+}
+
+export const reducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
    switch (action.type) {
       case SET_START_VALUE: {
          return {...state, startValue: action.value}
@@ -60,3 +77,9 @@ export const setMessage = (message: string) => ({type: SET_MESSAGE, message}) as
 export const setError = (text: string) => ({type: SET_ERROR, text}) as const;
 export const setSettingsMode = (typeMode: boolean) => ({type: SET_SETTINGS_MODE, typeMode}) as const;
 export const setShowMainButtons = (isShow: boolean) => ({type: SET_SHOW_MAIN_BUTTONS, isShow}) as const;
+
+export const useDispatch = () => {
+   const dispatch = _useDispatch();
+   return (ac: ActionsType) => dispatch(ac);
+}
+

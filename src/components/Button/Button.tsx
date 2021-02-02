@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import s from './Button.module.css';
 
-type PropsType = {
+export type PropsType = {
    onClick: () => void
    isDisable?: boolean
 }

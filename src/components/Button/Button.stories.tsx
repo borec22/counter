@@ -1,19 +1,32 @@
 import React, {useState} from 'react';
-import {Button} from './Button';
+import {Button, PropsType} from './Button';
 import {action} from '@storybook/addon-actions';
+import {Meta, Story} from '@storybook/react/types-6-0';
 
 
 export default {
-   title: 'Buttons stories',
+   title: 'Counter/Button',
    component: Button,
+} as Meta;
+
+const callback = action('count changed value plus one');
+
+const Template: Story<PropsType> = (args) => <Button {...args}>increase</Button>
+
+const baseArgs = {
+   onClick: callback
 }
 
-export const ButtonDefault = () => {
-   const callback = action('when clicked count changed value plus one');
-   return <Button onClick={callback}>Add</Button>
+export const ButtonDefaultExample = Template.bind({});
+
+ButtonDefaultExample.args = {
+   ...baseArgs,
+   isDisable: false
 }
 
-export const ButtonDisabled = () => {
-   const callback = action('when clicked count changed value plus one');
-   return <Button onClick={callback} isDisable={true}>Add</Button>
+export const ButtonDisabledExample = Template.bind({});
+
+ButtonDisabledExample.args = {
+   ...baseArgs,
+   isDisable: true
 }

@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import s from './Display.module.css';
-import {SettingsWindow} from './Settins/SettingsWindow';
+import {SettingsWindow} from './SettinsWindow/SettingsWindow';
 import {MainWindow} from './MainWindow/MainWindow';
 
 export type ViewType = 'settings' | 'main';
@@ -9,7 +9,6 @@ export type PropsType = {
    maxValue: number
    startValue: number
    view: ViewType
-   message: string
    error: string
    setMaxValue: (e: ChangeEvent<HTMLInputElement>) => void
    setStartValue: (e: ChangeEvent<HTMLInputElement>) => void
@@ -23,7 +22,6 @@ export const Display: React.FC<PropsType> = (props) => {
       view,
       setMaxValue,
       setStartValue,
-      message,
       error,
    } = props;
 
@@ -38,8 +36,7 @@ export const Display: React.FC<PropsType> = (props) => {
                                error={error}  /> :
                <MainWindow start={count}
                            finish={maxValue}
-                           message={message}
-                           error={error}/>
+               />
          }
       </div>
    );
